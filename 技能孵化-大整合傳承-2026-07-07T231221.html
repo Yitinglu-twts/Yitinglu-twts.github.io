@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>從零孵化一個可驗證的 AI 技能 — 法務部書類分類全程傳承(大整合版)</title>
+<style>
+  :root { --ink:#2b2b2b; --bg:#f7f5f0; --red:#b23b3b; --green:#4a7c59; --amber:#a07d1c; --blue:#33556e; }
+  body { font-family:"PingFang TC","Noto Sans TC",sans-serif; background:var(--bg);
+         color:var(--ink); max-width:920px; margin:0 auto; padding:2rem 1.2rem;
+         font-size:18px; line-height:1.9; }
+  h1 { font-size:26px; line-height:1.5; }
+  h2 { font-size:22px; margin-top:3.2rem; border-left:6px solid var(--green); padding-left:.6rem; }
+  h3 { font-size:19px; margin-top:2.2rem; color:#5a4d33; }
+  .prompt-box { background:#fffbe8; border:1px solid #e0d9b8; border-radius:12px;
+                padding:1.1rem 1.4rem; white-space:pre-wrap; font-size:15px; line-height:1.8; margin:.6rem 0 .3rem; }
+  .prompt-box b { color:var(--amber); }
+  .anno { font-size:14.5px; color:#555; background:#f0ede4; border-radius:0 0 10px 10px;
+          padding:.55rem 1.4rem; margin:0 .6rem 1.4rem; }
+  .anno .mine { color:var(--red); font-weight:700; }
+  .svgcard { background:#fff; border-radius:16px; box-shadow:0 2px 10px rgba(0,0,0,.08);
+             padding:1.2rem; margin:2rem 0 .4rem; }
+  .svgcard svg { width:100%; height:auto; display:block; }
+  figcaption { font-size:15px; color:#666; margin:.4rem 0 0 .4rem; }
+  .quote { font-size:14px; color:#888; border-left:3px solid #ccc; padding-left:.8rem; margin:.6rem 0 1.6rem .4rem; }
+  code, pre { font-family:"SF Mono",Menlo,monospace; }
+  pre { background:#2d2a26; color:#eee8dd; border-radius:12px; padding:1rem 1.2rem;
+        font-size:13.5px; line-height:1.6; overflow-x:auto; }
+  .step { background:#fff; border-radius:12px; padding:.9rem 1.2rem; margin:.8rem 0;
+          box-shadow:0 1px 4px rgba(0,0,0,.06); }
+  .warn { background:#f7ecec; border-left:4px solid var(--red); border-radius:8px;
+          padding:.8rem 1.2rem; font-size:16px; }
+  .note { background:#eef3ee; border-left:4px solid var(--green); border-radius:8px;
+          padding:.8rem 1.2rem; font-size:16px; }
+  table { border-collapse:collapse; font-size:15px; width:100%; }
+  td,th { border:1px solid #ddd; padding:.35rem .7rem; text-align:left; }
+  th { background:#efece4; }
+  .toc { background:#fff; border-radius:12px; padding:1rem 1.6rem; font-size:15.5px; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+  .v { color:var(--green); font-weight:700; }
+  .x { color:var(--red); font-weight:700; }
+</style>
+</head>
+<body>
+
+<h1>從零孵化一個可驗證的 AI 技能<br>
+<small style="color:#777">法務部書類分類 × GEPA 三輪演進 × 全部 prompt 傳承(大整合版,2026-07-07)</small></h1>
+
+<p>這一頁把三輪工作階段的傳承文件與全部人類 prompt 整合成一份。它回答兩個問題:
+<b>①</b> 這個「檢察官書類分類技能」是怎麼從零做到保留集 96.44 的——每一段 prompt 在幹什麼、為什麼要下、踩過哪些地雷;
+<b>②</b> 這整套「孵化流程」哪些部分是<b>通用骨架</b>(換一個領域照樣能用)、哪些是<b>領域知識槽位</b>(要置換的部分)——
+骨架已抽出來做成新技能 <code>/技能孵化</code>,夥伴以後孵化自己的技能不必重講這些 prompt。</p>
+
+<div class="toc"><b>目錄</b><br>
+001 一張圖看懂孵化流程 ── 002 全部 prompt 傳承(四個工作階段,逐字+拆解)── 003 歷程:三輪演進時間軸
+── 004 核心觀念圖解(GEPA 三角/Dynamic Workflow/失誤型態學/誠實紅線/知識位階)── 005 成果四件套(現行版 cand-009)
+── 006 為什麼能突破 ── 007 給接手者的地雷總表 ── 008 通用化拆解 → <code>/技能孵化</code> ── Sources</div>
+
+<!-- ================================================================ -->
+<h2>001|一張圖看懂:技能是怎麼孵出來的</h2>
+
+<figure class="svgcard">
+<svg viewBox="0 0 860 420" role="img" aria-label="孵化流程七階段">
+  <defs><marker id="a1" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+    <path d="M0,0 L10,4 L0,8 z" fill="#8a7c5d"/></marker></defs>
+  <text x="30" y="34" font-size="19" font-weight="700">🐣 可驗證技能孵化:七個階段(本專案三輪走完)</text>
+  <!-- row 1 -->
+  <rect x="30" y="60" width="180" height="86" rx="12" fill="#eef3f8" stroke="#33556e"/>
+  <text x="120" y="88" text-anchor="middle" font-size="15" font-weight="700" fill="#33556e">① 需求訪談</text>
+  <text x="120" y="112" text-anchor="middle" font-size="12.5">輸入/輸出/欄位/分類</text>
+  <text x="120" y="132" text-anchor="middle" font-size="12.5">專家 know-how 收齊</text>
+  <rect x="250" y="60" width="180" height="86" rx="12" fill="#eef3f8" stroke="#33556e"/>
+  <text x="340" y="88" text-anchor="middle" font-size="15" font-weight="700" fill="#33556e">② 資料工程</text>
+  <text x="340" y="112" text-anchor="middle" font-size="12.5">AI 友善純文字化</text>
+  <text x="340" y="132" text-anchor="middle" font-size="12.5">訓練/保留集切割封存</text>
+  <rect x="470" y="60" width="180" height="86" rx="12" fill="#eef3f8" stroke="#33556e"/>
+  <text x="560" y="88" text-anchor="middle" font-size="15" font-weight="700" fill="#33556e">③ 架構決策</text>
+  <text x="560" y="112" text-anchor="middle" font-size="12.5">Dynamic Workflow:</text>
+  <text x="560" y="132" text-anchor="middle" font-size="12.5">腳本控流程,模型只判讀</text>
+  <rect x="690" y="60" width="150" height="86" rx="12" fill="#f2f7f3" stroke="#4a7c59"/>
+  <text x="765" y="88" text-anchor="middle" font-size="15" font-weight="700" fill="#4a7c59">④ 評測場</text>
+  <text x="765" y="112" text-anchor="middle" font-size="12.5">選手/裁判/教練</text>
+  <text x="765" y="132" text-anchor="middle" font-size="12.5">逐欄計分腳本</text>
+  <line x1="210" y1="103" x2="245" y2="103" stroke="#8a7c5d" stroke-width="2.5" marker-end="url(#a1)"/>
+  <line x1="430" y1="103" x2="465" y2="103" stroke="#8a7c5d" stroke-width="2.5" marker-end="url(#a1)"/>
+  <line x1="650" y1="103" x2="685" y2="103" stroke="#8a7c5d" stroke-width="2.5" marker-end="url(#a1)"/>
+  <!-- GEPA loop -->
+  <rect x="140" y="190" width="580" height="120" rx="14" fill="#fdf8ec" stroke="#a07d1c" stroke-width="2"/>
+  <text x="430" y="218" text-anchor="middle" font-size="15.5" font-weight="700" fill="#a07d1c">⑤ GEPA 疊代迴圈(跑很多輪,直到收斂)</text>
+  <text x="430" y="248" text-anchor="middle" font-size="13.5">候選 prompt → 全量評測 → 逐案 diff → 回退案「單點重測 2/2」歸因</text>
+  <text x="430" y="274" text-anchor="middle" font-size="13.5">→ 手術式修(只動壞的段落)→ 再驗 → Pareto 比較 → 收斂/回退</text>
+  <line x1="765" y1="150" x2="700" y2="188" stroke="#8a7c5d" stroke-width="2.5" marker-end="url(#a1)"/>
+  <!-- row 3 -->
+  <rect x="140" y="340" width="260" height="66" rx="12" fill="#f2f7f3" stroke="#4a7c59"/>
+  <text x="270" y="366" text-anchor="middle" font-size="15" font-weight="700" fill="#4a7c59">⑥ 誠實驗收</text>
+  <text x="270" y="390" text-anchor="middle" font-size="12.5">保留集+獨立評審+標註水分</text>
+  <rect x="460" y="340" width="260" height="66" rx="12" fill="#f2f7f3" stroke="#4a7c59"/>
+  <text x="590" y="366" text-anchor="middle" font-size="15" font-weight="700" fill="#4a7c59">⑦ 傳承</text>
+  <text x="590" y="390" text-anchor="middle" font-size="12.5">log.md+prompt 彙整+傳承 HTML</text>
+  <line x1="330" y1="310" x2="290" y2="336" stroke="#8a7c5d" stroke-width="2.5" marker-end="url(#a1)"/>
+  <line x1="530" y1="310" x2="570" y2="336" stroke="#8a7c5d" stroke-width="2.5" marker-end="url(#a1)"/>
+</svg>
+<figcaption>白話:先問清楚要考什麼(①),把考卷數位化、留一疊不給選手看的考題(②),決定哪些事不讓模型做(③),
+搭好考場(④),然後教練帶選手反覆考試改講義(⑤),最後拿封存考題誠實驗收(⑥)、寫成講義傳給下一屆(⑦)。
+(真操作:①=客戶訪談 HTML+需求 PDF;②=<code>data/ai-ready/</code> 60/40 切割;③=<code>pipeline.ts</code>;④=<code>tools/eval.ts</code>;⑤=<code>gepa/candidates+runs</code>;⑥=<code>gepa/log.md</code> 誠實紅線;⑦=本頁。)</figcaption>
+</figure>
+
+<!-- ================================================================ -->
+<h2>002|全部 prompt 傳承(逐字完整+逐段拆解)</h2>
+
+<p>四個工作階段、28 段人類 prompt,依時間順序。黃框=<b>順稿後的 prompt 原文</b>(修錯字補標點,不改原意);
+灰框=拆解:🎯 在做什麼/💡 為什麼重要/<span style="color:#b23b3b">⚠️ 地雷</span>。</p>
+
+<figure class="svgcard">
+<svg viewBox="0 0 860 250" role="img" aria-label="prompt 六種功能地圖">
+  <text x="30" y="34" font-size="19" font-weight="700">🗺️ 28 段 prompt 其實只有六種動作——這就是孵化者的鍵盤</text>
+  <rect x="30"  y="60" width="255" height="76" rx="12" fill="#eef3f8" stroke="#33556e"/>
+  <text x="157" y="90" text-anchor="middle" font-size="15" font-weight="700" fill="#33556e">🧭 開需求(2 段)</text>
+  <text x="157" y="116" text-anchor="middle" font-size="12.5">輸入輸出、know-how 來源、角色分工</text>
+  <rect x="305" y="60" width="255" height="76" rx="12" fill="#f2f7f3" stroke="#4a7c59"/>
+  <text x="432" y="90" text-anchor="middle" font-size="15" font-weight="700" fill="#4a7c59">🏗️ 定架構(4 段)</text>
+  <text x="432" y="116" text-anchor="middle" font-size="12.5">Dynamic Workflow、輸出格式、對照表腳本化</text>
+  <rect x="580" y="60" width="255" height="76" rx="12" fill="#fdf8ec" stroke="#a07d1c"/>
+  <text x="707" y="90" text-anchor="middle" font-size="15" font-weight="700" fill="#a07d1c">📏 顧紀律(7 段)</text>
+  <text x="707" y="116" text-anchor="middle" font-size="12.5">>90 才停、記分板、pi -p 別跑錯、進度追蹤</text>
+  <rect x="30"  y="150" width="255" height="76" rx="12" fill="#f5eff5" stroke="#7a5c7a"/>
+  <text x="157" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#7a5c7a">📚 餵知識(3 段)</text>
+  <text x="157" y="206" text-anchor="middle" font-size="12.5">法規快照、官方需求 PDF、抓法條做 DSL</text>
+  <rect x="305" y="150" width="255" height="76" rx="12" fill="#fdf4f4" stroke="#b23b3b"/>
+  <text x="432" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#b23b3b">⚖️ 驗真假(8 段)</text>
+  <text x="432" y="206" text-anchor="middle" font-size="12.5">黃金選手對答案、保留集分數、雙屬性研究</text>
+  <rect x="580" y="150" width="255" height="76" rx="12" fill="#efece4" stroke="#8a7c5d"/>
+  <text x="707" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#5a4d33">📜 做傳承(4 段)</text>
+  <text x="707" y="206" text-anchor="middle" font-size="12.5">prompt 彙整、傳承 HTML、打包、資料夾整理</text>
+</svg>
+<figcaption>拆到骨子裡,孵化技能不需要會寫程式,需要的是這六種「動作」輪流出手——這也是後面 <code>/技能孵化</code> 引導流程的骨架。</figcaption>
+</figure>
+
+<h3>工作階段 S1|GEPA 首輪:從零到訓練集 98.15、保留集 91.13(13 段)</h3>
+
+<div class="prompt-box"><b>【S1-001|開場需求】</b>
+我們在 data 底下有 input 跟 output。input 裡面每一個資料夾都是一批案件,可能是 PDF、可能是 DOCX,是每一個人的起訴、不起訴跟偵查結果的書類;裡面會有個資、犯罪行為等等。
+
+一開始系統是沒有「人口販運案件、未遂犯、幫助犯、重大刑事案件、國土保育案件」這些資料夾的,連資料夾名稱都不知道——是人類專家判斷之後,才幫它分好這些資料夾。
+
+分好資料夾之後,還要對應 output 資料夾裡的 Excel 表:它有五個頁簽,對應剛剛人工建立的五個分類。每一筆個案都要有上面的欄位——例如它是臺北地檢還是桃園地檢、年份是 114 年、字別是偵字還是偵緝字(這些都有機關自己的代號)、被告姓名(去識別化)——最重要的是要判它屬於起訴、不起訴還是緩起訴。
+
+每個頁簽下面要分類的項目又不一樣:人口販運是「多選題」,有性剝削、勞力剝削、器官摘取、人流處置;國土保育通常是「單選題」,可能是野生動物保育法或森林法;幫助犯也有一些類別。
+
+這些 know-how 放在「客戶提供的原始資料-統計書類」裡,有兩個檔案:一個 TXT 是領域專家口述的前情提要;另一個是人類專家訪談事務官整理出來的 HTML,裡面寫了 AI 要怎麼判讀起訴書/不起訴書、怎麼判未遂、怎麼判幫助犯(例如刑法第 30 條)。重大刑案有指定法條清單;國土保育也有指定條號,例如森林法第 51、53、54 條——52 條就不是。每一個欄位都是專家指定的法條專業領域,這些都很重要。
+
+現在請你上網查 pi.dev 怎麼製作技能。你的電腦裡已經有 pi,用「pi 空格 -p」可以驅動地端 31B 模型。查清楚之後,在 .pi/ 底下可以做 skills。
+
+針對輸入輸出的需求,你要整理出乾淨的資料夾:訓練資料要切割成「訓練集」跟「保留集」,放不同資料夾。Fable(你)有能力做出標準正確答案;但技能訓練的目標對象是 pi -p 的 31B 小模型。我希望你用 Fable 把資料夾轉成 AI 友善的純文字——PDF 轉純文字、Excel 也轉 AI 友善格式。一旦轉好,你就可以自由切割保留集和訓練集來訓練技能。
+
+訓練技能時,請上網查一個叫 GEPA 的 GitHub。GEPA 可以多輪疊代:評審請用 Fable subagent、乾淨上下文來打分;然後照 GEPA 的精神,每一輪針對 pi -p 這個「選手」疊代。GEPA 就像教練,不斷教選手進步。技能越進步,它對輸入輸出的考題就越厲害。
+
+所以你要清楚告訴我:考題有幾題、訓練集訓了幾題、訓練完保留題過了幾題、幾分、情況怎麼樣。評審、裁判用 Fable subagent 做,選手是 pi -p。每一輪疊代都要清清楚楚講:幾分、做了什麼事;疊代過程的技能或腳本都要留下來。技能如果純文字 SKILL.md 就能跑,就這樣跑;要加腳本的話,pi.dev 可以加技能腳本,請用 bun 寫 TypeScript 放進去。
+
+技能疊代完成之後,它就有能力把 AI 友善的純文字輸入,做成 AI 友善的純文字輸出——輸出就是剛剛講的試算表,每個欄位都要有,等於是把一個案件做標籤分類,輸出成不同頁簽的試算表。最後你再用腳本工具把它變成真正的 Excel 格式。工具一律優先用 bun + TypeScript 製作。每一輪都報分數和原因。</div>
+<div class="anno">🎯 <b>一段 prompt 就把整個孵化案定調</b>:輸入輸出樣態、專家 know-how 在哪、<b>選手(31B)/教練(GEPA)/評審(Fable subagent)三角</b>、訓練/保留集切割、工具鏈(bun+TS)、驗收語言(每輪報分數)。💡 之後三輪所有工作都是在執行這一段的骨架——開場需求寫得越完整,後面返工越少。<span class="mine">⚠️ 地雷:「Fable 轉 AI 友善純文字」是純格式轉換(轉檔),不是叫 Fable 讀懂內容;對接的人只要說「把這個資料夾轉純文字」就夠。</span></div>
+
+<div class="prompt-box"><b>【S1-002|目標鎖定】</b>
+請用 GEPA 進化到大於 90 分才停止。</div>
+<div class="anno">🎯 給演化一個<b>明確的停止條件</b>。💡 沒有數字門檻,疊代會無限做下去或太早收工;90 分是「可用」與「不可用」的分水嶺。</div>
+
+<div class="prompt-box"><b>【S1-003|進度關切】</b>
+請告訴我現在進度,你是卡住了嗎?還是還在做?</div>
+<div class="anno">🎯 進度透明化。💡 長任務必問——AI 卡住不會自己舉手;定期戳一下能及早發現方向錯誤。</div>
+
+<div class="prompt-box"><b>【S1-004|Dynamic Workflow 重構指示】</b>
+有幾個問題要講。你的技能出來之後,很有可能要搭配腳本做多步驟產出——當然包含 OCR、Word、PDF 轉 AI 友善純文字,這些你都要做,而且要包含在技能裡面;不能搞半天這些不在技能裡,那就穿幫了。所以技能一定要有「AI 友善轉換」的能力,轉換完最後還要變成 Excel。
+
+問題來了:31B 在做這些的時候,請你上網查 Claude Code 的 Dynamic Workflow。它的原理是用 JS 腳本控制整個工作流——技能在腳本下面被控制。多步驟、多腳本,就有機會用 JS 控制工作流,不會讓 Agentic AI 亂掉、有步驟沒做到、做得不夠好、或沒有平行處理。這些都可以用 Dynamic Workflow 的原理解決。
+
+我們希望你把這個概念用在本案:31B 的技能啟動之後,有一個 bun TypeScript 輔助腳本實現 Dynamic Workflow。腳本裡做多步驟拆解:從原始資料開始,要怎麼呼叫大模型——可以用 pi 空格 -p 的方式呼叫,因為它有 Agentic AI 的能力——而且最好平行做,不然會很慢。透過這些方式,就有機會把大量資料處理好。
+
+另外一個困惑:如果資料不是只有幾個檔案,而是十幾個、100 個、300 個檔案,你的壓力測試過得了過不了?要跑多久?所以做完之後,幫我測:多快(速度數字)、多省資源、轉換成最終檔案多精準、品質多好——給我一份測量報告。每一輪疊代時,要根據這些 baseline 跟測量報告的差異,才能疊代下一代。
+
+我猜最後實際使用也不會一個檔案一個檔案分類,那樣沒意義;應該是批次做,一次 100 或 300 個檔案。例如一個地檢署多個檔案全部放進某個資料夾,技能一啟動,就跑 Dynamic Workflow 裡寫好的腳本完成這件事。總之怕你工作流設計錯誤——上網查清楚之後,照 Claude Code Dynamic Workflow 的精神,好好壓力測試、重構成能夠很穩健地用 31B、用 pi -p 完成的東西。</div>
+<div class="anno">🎯 <b>本案最重要的架構指令</b>:①技能必須自包含(含轉檔,否則「穿幫」);②腳本控流程、模型只判讀;③要壓測、要 baseline。💡 直接催生了 <code>pipeline.ts</code> 四階段管線與 +4.90 的最大單輪躍升。<span class="mine">⚠️ 地雷:小模型撐不起自主編排——步驟會漏、不會平行、每次路徑不同;把控制流交給腳本才可重現。</span></div>
+
+<div class="prompt-box"><b>【S1-005|記分板在哪】</b>
+請問你每一輪的分數打在哪裡?我沒看到選手的分數。</div>
+<div class="anno">🎯 要求<b>記分板可視化</b>。💡 這一句催生了 <code>gepa/log.md</code>——每輪分數+變更摘要的單一事實來源;沒有記分板,疊代故事只存在 AI 的上下文裡,人接不了手。</div>
+
+<div class="prompt-box"><b>【S1-006|輸出格式確認】</b>
+很厲害的東西。對方本來就有一個標籤管理系統,最後要把試算表 Excel 匯回去。所以你的產出可不可以是多張 CSV?照理來講應該有五個,對應五個頁簽:重大刑事案件、人口販運案件、國土保育案件、幫助犯、未遂犯。同時也要產出真正的 Excel。因為你用 bun + TypeScript,不管 CSV 或 Excel,產出這些檔案之後就可以匯回原來的系統。介接傳輸已經透過 Files API 解決,系統之間可以做檔案交換——所以你只要負責產生檔案就好,介接傳輸不用你負責。</div>
+<div class="anno">🎯 收斂<b>交付邊界</b>:5 CSV+1 Excel,到檔案為止、介接不歸我們管。💡 明確的「不做什麼」跟「做什麼」一樣值錢。</div>
+
+<div class="prompt-box"><b>【S1-007|傳承指令】</b>
+把這一次做分類技能的整個過程 prompt 做一個傳承。prompt 的部分我要原文,但因為原文有錯字、贅詞、錯標點,所以你要順稿整理、結構分段。</div>
+<div class="anno">🎯 第一次傳承:prompt 要原文+順稿。💡 訂下傳承的品質標準——「存真」與「可讀」兼顧。</div>
+
+<div class="prompt-box"><b>【S1-008|打包詢問】</b>
+請問我現在最終最好的 skill 在哪?我要準備打包了。</div>
+<div class="anno">🎯 確認交付物位置。💡 疊代產物很多(candidates 一堆版本),要能一句話回答「現在最好的是哪份、在哪裡」——這也是後來 <code>dist/</code> 發佈區的由來。</div>
+
+<div class="prompt-box"><b>【S1-009|換黃金選手,做新題庫正確答案】</b>
+剛剛你有用裁判、選手、GEPA 跑出最好的 classifier 技能。現在幫我換一個黃金選手,就是 Fable。題目 input 在 `data/2026-06-30-客戶提供的原始資料-統計書類/_psue法條實抓`。請你先幫我把正確答案 output 做出來。</div>
+<div class="anno">🎯 <b>黃金選手驗證法</b>:用最強模型(Fable)對新題庫做一份「準答案卷」。💡 沒有人工標註時,大模型答案卷+人工抽核=低成本 gold;後來 22 家機關代碼的 12 家實證就是從這份 psue-gold 來的。</div>
+
+<div class="prompt-box"><b>【S1-010|打開答案卷位置】</b>
+幫我打開答案卷位置。</div>
+<div class="anno">🎯 人工抽核的入口。💡 黃金選手的答案卷一定要人看過才能當 gold。</div>
+
+<div class="prompt-box"><b>【S1-011|答案卷欄位對齊法務部格式】</b>
+不過你的答案卷欄位,應該要跟原始法務部要的欄位一致(`data/output/新增需求相關書類.xlsx`)。</div>
+<div class="anno">🎯 gold 的 schema 要跟客戶交付格式<b>一模一樣</b>。💡 欄位不對齊,分數就量不到真正要交的東西。</div>
+
+<div class="prompt-box"><b>【S1-012|確認對答案用哪一份】</b>
+那我現在要拿哪一份去對答案?我之後會換回選手 gemma-31B,到時候要看哪一份當作正確答案給他對答案?</div>
+<div class="anno">🎯 固定<b>唯一的 gold 檔</b>(gold-verified.jsonl)。💡 答案卷有草稿有定稿,不指定唯一版本,之後對答案會各說各話。</div>
+
+<div class="prompt-box"><b>【S1-013|對答案】</b>
+請你用 gold-verified.jsonl 幫我對這份選手的答案卷 `dist/moj-doc-classifier/output/判讀結果.xlsx`,告訴我他錯幾題、錯在哪、總分幾分。</div>
+<div class="anno">🎯 選手 vs gold 的正式對卷。💡 報告格式固定:「錯幾題、錯在哪、總分」——錯在哪(逐欄 diff)才是下一輪疊代的原料。</div>
+
+<h3>工作階段 S2|法條知識庫:把「專家的核心」抓成資料資產(4 段)</h3>
+
+<div class="prompt-box"><b>【S2-001|開啟瀏覽器測試】</b>
+(先執行 /chrome 連接瀏覽器)用 Claude in Chrome 瀏覽 CNN 網頁看看。</div>
+<div class="anno">🎯 工具冒煙測試。💡 大抓取任務前先確認瀏覽器通道是活的——工欲善其事。</div>
+
+<div class="prompt-box"><b>【S2-002|抓取五類案件相關法規法條(核心需求)】</b>
+附件:`data/2026-06-30-客戶提供的原始資料-統計書類/17-統計處書類裁判書標籤判讀-需求情境拷貝.html`
+
+想要抓全國法規資料庫裡相關的法條,存在適當的資料夾底下。
+
+背景思考(自問自答釐清目的):要怎麼抓?抓哪些範圍?我猜是刑法相關的。為什麼要抓?目的是做「對照表」,用來做分類。為什麼抓了法條就可以分類?因為像國土保育這類案件,起訴書裡會寫到它涉犯某一條法;看到這條法,就可以把案件分類到國土保育或某一類案件。輸入會是一份 PDF 或 Word,輸出就是根據內文的涉犯法條,對照到全國法規資料庫裡的條文,完成分類——是這個概念。
+
+訪談時法務部的領域專家說過:「法條對照表是核心,所有判讀都是從法條出發。」但我們並不具備法律專業,不知道對照表要怎麼對照。請 Fable 幫我們上網查清楚——你有 Claude in Chrome 可以用,也可以用 Bun/TS 寫程式碼大量抓取,都可以。
+
+抓取範圍(五個類別):未遂犯、幫助犯、重大刑案、人口販運類別、國土保育案件。
+
+要求:
+- 按照全國法規資料庫的「法規 → 法條」階層形式,把這五類相關的法規與法條抓下來存檔,放在本案目錄底下。
+- 資料夾要標「臺灣時間的時間戳」標籤。
+- 檔名要有系統性,能與全國法規資料庫對照。
+- 要做一個「盤點表」,不能漏抓:用 metadata JSONL 或相關描述講清楚——哪些已抓、哪些還沒抓、幾月幾號抓的,都要記錄清楚,可供對照核對。
+
+判讀邏輯舉例:如果個案的涉犯法條包含「刑法第 30 條」(幫助犯條文),幫助犯就成立——這就是要抓法條的原因。不只抓法條本文,還要做「條目清單」:例如涉及「重大刑案 19 罪名清單」的就歸重大刑案;毒品危害防制條例第 4 條第 1、2 項與第 5 條第 1 項,要判斷毒品數量是否達 1,000 公克以上,達標才算重大刑案。
+
+對照表 DSL:附上的 HTML 裡有我們專家訪談整理的原理原則。請透過這些原理原則,做出一個對照表的 DSL(領域專屬語言),用 JSON 或 JSONL 表示。一旦有了這個完整的對照表,AI 回答時照表比對,就幾乎不會錯。</div>
+<div class="anno">🎯 把專家一句「法條對照表是核心」變成<b>資料資產</b>:官方 API 快照(18 部法規、95 條文)+盤點表(inventory.jsonl,防漏抓)+對照 DSL(mapping-dsl.json,含語意護欄)。💡 這段 prompt 的「自問自答釐清目的」示範了怎麼把模糊需求想清楚再下指令。<span class="mine">⚠️ 地雷:抓資料一定要盤點表+時間戳,否則三個月後沒人知道抓了什麼、缺了什麼、是哪天的版本。</span></div>
+
+<div class="prompt-box"><b>【S2-003|確認產出位置】</b>
+你的相關產出是在哪個資料夾?</div>
+<div class="anno">🎯 交付物定位。💡 同 S1-008——每個階段結束都要能一句話說出產物在哪。</div>
+
+<div class="prompt-box"><b>【S2-004|整理本輪 prompt】</b>
+請你整理這一輪所有的 prompt,順稿、改錯字、補標點、刪贅字,然後開一個 `prompt` 資料夾,存到 `prompt-1.md`。</div>
+<div class="anno">🎯 prompt 傳承常態化:每輪收工都彙整一份。💡 這個習慣讓本頁「全部 prompt」有得整合。</div>
+
+<h3>工作階段 S3|GEPA 第二輪:壓測踩雷 → 保留集 91.13 → 96.44(8 段)</h3>
+
+<div class="prompt-box"><b>【S3-001|修復技能:txt 輸入與機關代碼對照表】</b>
+我剛跑了一次技能,有兩個問題。第一,它預設輸入都是 PDF/DOC,但也可能有 TXT,所以多花了一些時間。第二,關於失敗案件的分析:目前有多件案件(包括新加入的兩件)都因為 missing field `iv_orgn` 而失敗,顯示模型在提取「機關名稱」時不夠穩定。但其實機關代碼會有對照表——對照表你直接自己做出來。像我肉眼看也看得出來:臺北地檢是 2213、桃園是 2214,這樣我可以推,所以你也可以推,把對照表做出來。
+
+請 Fable 先修復技能:產出新一輪的 GEPA 選手(`gepa/candidates/` 到 cand-006),`dist/moj-doc-classifier` 這個技能也要同步更新。</div>
+<div class="anno">🎯 真實使用踩雷後的修復指令:①支援 txt;②<b>「我可以推,所以你也可以」——把機關代碼從模型記憶改成腳本查表</b>(orgn.ts,22 家=12 家答案卷實證+10 家區域規律推導)。💡 使用者用一句常識就指出了正確架構:封閉詞彙表是查表問題,不是判讀問題。<span class="mine">⚠️ 地雷:模型背對照表天生不穩——沒背到就交白卷、背混就亂填;凡是「表」,一律腳本化。</span></div>
+
+<div class="prompt-box"><b>【S3-002|練入法規資料庫快照,跑保留集驗證】</b>
+`data/2026-07-07T142136+0800-全國法規資料庫-五類案件法規法條/` 這個部分也是參考資料,可以提高你判斷的準確度,請練進你的技能。更新完技能後,一樣要跑保留集資料的分數給我看,確認技能是否進步。</div>
+<div class="anno">🎯 把 S2 抓的法規資產<b>練進 prompt</b>(條號精修:森林法無§52、山坡地§35-2 不算、區域計畫法只有§22),而且「改完必跑保留集」。💡 改 prompt 不驗證=盲改;這段建立了「每改必測」的節奏。</div>
+
+<div class="prompt-box"><b>【S3-003|評測方式提醒:pi -p 給 31B】</b>
+你在跑 GEPA 演進的時候,技能記得要用 `pi -p` 的方式跑進去——因為這是要給地端 31B 用的技能,不要跑錯了。</div>
+<div class="anno">🎯 <b>考卷要給對的選手寫</b>。💡 用 Fable 自測分數會虛高——技能上線跑在 31B 上,評測就必須跑在 31B 上。<span class="mine">⚠️ 地雷:evaluator 與 production 的模型/參數/覆寫邏輯必須完全一致,量的才是上線行為。</span></div>
+
+<div class="prompt-box"><b>【S3-004|進度詢問】</b>
+請問評分跑完了嗎?</div>
+<div class="anno">🎯 進度追蹤(同 S1-003)。</div>
+
+<div class="prompt-box"><b>【S3-005|研究:幫助犯與未遂犯能否同時成立】</b>
+請你上網查:在法律案件的分類上,一個案件有沒有可能同時屬於幫助犯又屬於未遂犯?尤其本案是要給法務部統計單位做統計的,它刻意分成五個大類別,應該有其統計上的需求——不管是管理面、新聞發布面,或是提供立法委員參考等各種層面。請幫我看一下:幫助犯跟未遂犯是否可能同時成立?若同時成立,應該把該案同時放到兩個類別,還是這樣不合理?</div>
+<div class="anno">🎯 對分類邊界的<b>領域研究指令</b>:法律上「幫助詐欺取財未遂」雙屬性成立(刑法§30 從屬性),統計上一案一類。💡 結論:兩表同放會重複計數;唯一實證(未遂犯-04)是未遂優先,但孤證——列入「待客戶確認」而不是自己拍板。<span class="mine">⚠️ 地雷:遇到規則模糊,先查證+標註孤證,不要讓 AI 或自己腦補官方慣例。</span></div>
+
+<div class="prompt-box"><b>【S3-006|傳承文件】</b>
+/htmlsvg 把上面流程傳承下來。</div>
+<div class="anno">🎯 第二輪傳承 HTML(本頁的前身之一)。</div>
+
+<div class="prompt-box"><b>【S3-007|練入官方統計需求文件】</b>
+`~/Downloads/115年度新世紀檢察AI智慧輔助系統(統計需求).pdf` 這份統計需求的智慧也請直接參考、練到你的技能裡面。一樣要用 `pi -p` 跑驗證,因為技能是給 31B 用的。</div>
+<div class="anno">🎯 <b>知識位階升級</bl>:官方 8 頁需求文件(最高位階)取代訪談節錄——性剝削清單精確化(刑231Ⅰ限「後段」詐術,前段容留營利不算!)、重大 19 罪名、舊法條號對照。💡 產出 cand-008/009,保留集 96.44。<span class="mine">⚠️ 地雷:訪談節錄只是二手轉述,拿到正式文件要逐條核對——本案就核出「應召站容留不算人口販運」這種會答錯整類的差異。</span></div>
+
+<div class="prompt-box"><b>【S3-008|彙整 prompt】</b>
+請你整理這一輪所有的 prompt,順稿、改錯字、修標點、刪贅字,然後開一個 `prompt/` 資料夾,存到 `prompt-0.md`。</div>
+<div class="anno">🎯 prompt 傳承常態化(同 S2-004)。</div>
+
+<h3>工作階段 S4|收斂與大整合:整理、解釋、傳承、通用化(3 段)</h3>
+
+<div class="prompt-box"><b>【S4-001|技能資料夾整理】</b>
+有點亂,幫我整理一下。這個技能應該要乾淨一點:input、output 跟 prompt 可以移出去,只有這個技能的 prompt 要留在裡面。(補充:移出的東西放到 `dist/` 上一層就好,不要丟到 repo 根目錄,那樣我找不到。)</div>
+<div class="anno">🎯 <b>技能要自包含且乾淨</b>:只留 prompts/scripts/reference/SKILL.md;輸入輸出與歷史文件放技能外一層。💡 交付前的「打掃」——接手的人打開資料夾第一眼就知道哪個是本體。</div>
+
+<div class="prompt-box"><b>【S4-002|逐檔解釋】</b>
+`dist/moj-doc-classifier` 這裡面每個檔案你都跟我解釋一下,用在這個 skill 的什麼作用。(追問:那 SKILL.md 跟 prompts/classify.md 有什麼差?)</div>
+<div class="anno">🎯 逐檔盤點+關鍵區辨:<b>SKILL.md 是為人寫的(架構與用法),classify.md 是為模型寫的(判讀知識)</b>。💡 產出 FILES.md 檔案責任清冊;能把每個檔案講清楚,才算真的掌握這個技能。</div>
+
+<div class="prompt-box"><b>【S4-003|大整合傳承+通用孵化器(本頁的指令)】</b>
+用 /htmlsvg 產生 HTML 統整的傳承文件。現在要做一個傳承文件給同事:裡面每一個 prompt 都非常重要,順序可能需要微調,但每一個 prompt 這樣邏輯帶下來,就是我們做這個 skill 的 know-how、孵化 skill 流程的知識,要讓夥伴知道整個流程到底怎麼跑。你之前產生過一些 HTML 知識文件,但有點分散;請你總覽重讀之前所有的 HTML 與我們整理的所有 prompt 傳承,重新整理成一份大整合的 HTML。這份 HTML 要看得到完整的 prompt 內容、要有流程、要有 SVG 概念拆解(這些 prompt 在幹什麼、為什麼要做這些事),地雷經驗或特別提醒要 highlight。
+
+再來:這份文件是給法務部做 skill 的;但我們將來會希望把整個流程拆解——哪些流程是固定的、通用泛化的 prompt 與流程,就可以做成另外一支 skill。這支 skill 是「可驗證的孵化器」技能(名字你取):以後夥伴傳承不用講那麼多 prompt,用斜線呼叫它,它就會帶路,引導這些珍貴的 prompt 經驗。新的使用者領域可能不一樣(例如環境知識、內政知識),經過引導置換領域知識之後,還是可以依照「演化選手、裁判、教練」的方式演化下去,孵化出另外的技能。所以:第一,傳承文件先做好;第二,把流程拆解成通用的、可驗證、可進化、會引導使用者置換領域知識的技能。</div>
+<div class="anno">🎯 本頁+<code>/技能孵化</code> 技能的誕生指令。💡 傳承的最高型態不是文件,是<b>可執行的流程</b>——把 know-how 做成技能,夥伴一個斜線就能繼承整套方法論。</div>
+
+<!-- ================================================================ -->
+<h2>003|歷程:三輪演進,一條時間軸看完</h2>
+
+<figure class="svgcard">
+<svg viewBox="0 0 860 400" role="img" aria-label="三輪演進總時間軸">
+  <text x="30" y="34" font-size="19" font-weight="700">📈 一天之內的三輪演進(2026-07-07)</text>
+  <line x1="60" y1="120" x2="820" y2="120" stroke="#bbb" stroke-width="2"/>
+  <!-- S1 -->
+  <rect x="60" y="60" width="240" height="40" rx="8" fill="#eef3f8" stroke="#33556e"/>
+  <text x="180" y="86" text-anchor="middle" font-size="13.5" font-weight="700" fill="#33556e">S1 首輪 GEPA(R0→R5)</text>
+  <circle cx="90" cy="120" r="7" fill="#c98c8c"/><text x="90" y="150" font-size="12.5" text-anchor="middle">R0 88.68</text>
+  <circle cx="150" cy="120" r="7" fill="#b3ab77"/><text x="150" y="150" font-size="12.5" text-anchor="middle">R1 92.39</text>
+  <circle cx="210" cy="120" r="7" fill="#8fa06a"/><text x="210" y="150" font-size="12.5" text-anchor="middle">R2 97.29</text>
+  <circle cx="270" cy="120" r="7" fill="#4a7c59"/><text x="270" y="150" font-size="12.5" text-anchor="middle">R5 98.15</text>
+  <text x="180" y="180" font-size="12.5" text-anchor="middle" fill="#3d6b8a" font-weight="700">保留集開封:91.13</text>
+  <!-- S2 -->
+  <rect x="330" y="60" width="150" height="40" rx="8" fill="#f5eff5" stroke="#7a5c7a"/>
+  <text x="405" y="86" text-anchor="middle" font-size="13.5" font-weight="700" fill="#7a5c7a">S2 法規知識庫</text>
+  <circle cx="405" cy="120" r="7" fill="#7a5c7a"/>
+  <text x="405" y="150" font-size="12.5" text-anchor="middle">18 部法規 95 條文</text>
+  <text x="405" y="170" font-size="12.5" text-anchor="middle">快照+盤點+DSL</text>
+  <!-- S3 -->
+  <rect x="510" y="60" width="240" height="40" rx="8" fill="#fdf8ec" stroke="#a07d1c"/>
+  <text x="630" y="86" text-anchor="middle" font-size="13.5" font-weight="700" fill="#a07d1c">S3 第二輪 GEPA(cand-006→009)</text>
+  <circle cx="540" cy="120" r="7" fill="#d9b96a"/><text x="540" y="150" font-size="12.5" text-anchor="middle">006 95.07</text>
+  <text x="540" y="168" font-size="11.5" text-anchor="middle" fill="#b23b3b">回退×3!</text>
+  <circle cx="610" cy="120" r="7" fill="#7fa88c"/><text x="610" y="150" font-size="12.5" text-anchor="middle">007 96.40</text>
+  <circle cx="680" cy="120" r="7" fill="#d9b96a"/><text x="680" y="150" font-size="12.5" text-anchor="middle">008 96.38</text>
+  <text x="680" y="168" font-size="11.5" text-anchor="middle" fill="#b23b3b">腦補未遂!</text>
+  <circle cx="750" cy="120" r="7" fill="#4a7c59"/><text x="750" y="150" font-size="12.5" text-anchor="middle" font-weight="700">009 96.44 ✅</text>
+  <!-- bottom annotations -->
+  <rect x="60" y="220" width="760" height="150" rx="12" fill="#fff" stroke="#ddd"/>
+  <text x="80" y="252" font-size="14" font-weight="700">每一步的「為什麼」:</text>
+  <text x="80" y="280" font-size="13.5">R2 +4.90(最大單刀)=姓名遮罩交給 mask.ts —— 別教模型做它天生不會的事(數中文字數)</text>
+  <text x="80" y="306" font-size="13.5">cand-006 分數升 3.94 仍不能收 —— 逐案 diff 抓到 3 個系統性回退,單點重測 2/2 重現才歸因動刀</text>
+  <text x="80" y="332" font-size="13.5">cand-008 練入官方需求文件(分數持平但法條清單對齊正式版=泛化性真改進)—— 分數不是唯一的收版標準</text>
+  <text x="80" y="358" font-size="13.5">cand-009 未遂鐵律「全文無『未遂』二字絕不可選未遂犯」—— 堵住 31B 對「海關查扣」的腦補</text>
+</svg>
+<figcaption>訓練集 88.68→98.15(+9.47);保留集 91.13→96.44(+5.31)。逐輪紀錄:<code>gepa/log.md</code>;逐案分數:<code>gepa/runs/*/results.json</code>。</figcaption>
+</figure>
+
+<!-- ================================================================ -->
+<h2>004|核心觀念圖解(五張卡,孵化者必修)</h2>
+
+<figure class="svgcard">
+<svg viewBox="0 0 800 340" role="img" aria-label="GEPA 三角:選手、評審、教練">
+  <defs><marker id="a2" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+    <path d="M0,0 L10,4 L0,8 z" fill="#8a7c5d"/></marker></defs>
+  <rect x="290" y="20" width="220" height="80" rx="14" fill="#e8eef7" stroke="#b8c8de"/>
+  <text x="400" y="52" text-anchor="middle" font-size="17" font-weight="bold">🏃 選手</text>
+  <text x="400" y="80" text-anchor="middle" font-size="14">pi -p × 地端 31B 小模型</text>
+  <rect x="40" y="210" width="230" height="100" rx="14" fill="#eef3ee" stroke="#bcd2bf"/>
+  <text x="155" y="243" text-anchor="middle" font-size="17" font-weight="bold">🧑‍⚖️ 評審</text>
+  <text x="155" y="270" text-anchor="middle" font-size="13.5">腳本逐欄精確比對 gold</text>
+  <text x="155" y="292" text-anchor="middle" font-size="13.5">+ Fable subagent 抽查認證</text>
+  <rect x="530" y="210" width="230" height="100" rx="14" fill="#fdf3e2" stroke="#e3cf9e"/>
+  <text x="645" y="243" text-anchor="middle" font-size="17" font-weight="bold">🧑‍🏫 教練</text>
+  <text x="645" y="270" text-anchor="middle" font-size="13.5">Fable subagent(乾淨上下文)</text>
+  <text x="645" y="292" text-anchor="middle" font-size="13.5">讀失敗軌跡 → 改寫技能提示</text>
+  <line x1="350" y1="105" x2="200" y2="205" stroke="#8a7c5d" stroke-width="2.5" marker-end="url(#a2)"/>
+  <text x="230" y="150" font-size="13.5" fill="#666">交卷(全量 JSON)</text>
+  <line x1="275" y1="265" x2="525" y2="265" stroke="#8a7c5d" stroke-width="2.5" marker-end="url(#a2)"/>
+  <text x="315" y="255" font-size="13.5" fill="#666">失敗摘要(錯哪欄、期望 vs 實際、原文節錄)</text>
+  <line x1="600" y1="205" x2="455" y2="105" stroke="#8a7c5d" stroke-width="2.5" marker-end="url(#a2)"/>
+  <text x="545" y="150" font-size="13.5" fill="#666">新一代技能提示</text>
+</svg>
+<figcaption>卡A|GEPA 三角。關鍵在評審給的是<b>逐案軌跡</b>而不是總分——教練看得到「錯在哪一欄、原文長怎樣」才能歸納出人看得懂、模型守得住的規則。只給總分,教練只能瞎猜。</figcaption>
+</figure>
+<p class="quote">GEPA(arXiv:2507.19457,ICLR 2026):反思式提示演化只需 100–500 次評測即可超越需上萬次 rollout 的強化學習——關鍵在保留完整失敗軌跡。</p>
+
+<figure class="svgcard">
+<svg viewBox="0 0 800 330" role="img" aria-label="Dynamic Workflow 對比">
+  <rect x="10" y="15" width="380" height="300" rx="14" fill="#faf1f1" stroke="#dcb8b8"/>
+  <text x="200" y="46" text-anchor="middle" font-size="16.5" font-weight="bold" fill="#b23b3b">❌ 全交給 Agentic AI 自由發揮</text>
+  <text x="200" y="86" text-anchor="middle" font-size="14">小模型自己決定步驟順序</text>
+  <text x="200" y="116" text-anchor="middle" font-size="14">→ 漏做 OCR、忘了驗證</text>
+  <text x="200" y="146" text-anchor="middle" font-size="14">→ 不會平行,100 檔跑到天荒地老</text>
+  <text x="200" y="176" text-anchor="middle" font-size="14">→ 遮罩/查表/補零隨機錯</text>
+  <text x="200" y="206" text-anchor="middle" font-size="14">→ 每次執行路徑都不一樣</text>
+  <text x="200" y="262" text-anchor="middle" font-size="15" fill="#b23b3b" font-weight="bold">小模型撐不起自主編排</text>
+  <rect x="410" y="15" width="380" height="300" rx="14" fill="#eef5ee" stroke="#b5cdb8"/>
+  <text x="600" y="46" text-anchor="middle" font-size="16.5" font-weight="bold" fill="#4a7c59">✅ Dynamic Workflow:腳本當總指揮</text>
+  <rect x="440" y="62" width="320" height="38" rx="8" fill="#fff" stroke="#b5cdb8"/>
+  <text x="600" y="87" text-anchor="middle" font-size="13.5">① discover:腳本列出所有檔案</text>
+  <rect x="440" y="106" width="320" height="38" rx="8" fill="#fff" stroke="#b5cdb8"/>
+  <text x="600" y="131" text-anchor="middle" font-size="13.5">② convert:平行 OCR+抽字(有快取)</text>
+  <rect x="440" y="150" width="320" height="38" rx="8" fill="#fff" stroke="#b5cdb8"/>
+  <text x="600" y="175" text-anchor="middle" font-size="13.5">③ classify:平行呼叫模型,驗證失敗自動重試</text>
+  <rect x="440" y="194" width="320" height="38" rx="8" fill="#fff" stroke="#b5cdb8"/>
+  <text x="600" y="219" text-anchor="middle" font-size="13.5">④ emit:5 CSV + Excel + 效能報告</text>
+  <text x="600" y="262" text-anchor="middle" font-size="14.5" fill="#4a7c59" font-weight="bold">模型只做一件事:讀一份文件,吐一個 JSON</text>
+  <text x="600" y="290" text-anchor="middle" font-size="13.5" fill="#587">步驟不會漏、天生平行、每次可重現</text>
+</svg>
+<figcaption>卡B|架構信念:凡有確定規則的事(遮罩、查表、補零、驗證、重試、平行)都放腳本,模型只留語意判斷。
+本案三次應用:mask.ts(姓名)、orgn.ts(機關)、pipeline.ts(流程)——每次都是一刀見血。</figcaption>
+</figure>
+<p class="quote">實測:100 檔冷跑 163.6 秒(36.7 檔/分)、0 重試、零雲端依賴;機敏書類不出內網。</p>
+
+<figure class="svgcard">
+<svg viewBox="0 0 800 360" role="img" aria-label="31B 的三個壞習慣">
+  <text x="30" y="36" font-size="19" font-weight="700">🔧 小模型失誤型態學:錯不是隨機的,是有「壞習慣」的</text>
+  <rect x="30" y="60" width="240" height="250" rx="12" fill="#fdf4f4" stroke="#b23b3b"/>
+  <text x="150" y="92" text-anchor="middle" font-size="15" font-weight="700" fill="#b23b3b">①補零方向錯</text>
+  <text x="150" y="124" text-anchor="middle" font-size="13">槍砲8條→❌0008</text>
+  <text x="150" y="148" text-anchor="middle" font-size="13">正確→✅0080(先接0再左補)</text>
+  <text x="150" y="186" text-anchor="middle" font-size="12.5" fill="#666">教法:正反例+口訣</text>
+  <text x="150" y="208" text-anchor="middle" font-size="12.5" fill="#666">「三位數條號的第一碼</text>
+  <text x="150" y="228" text-anchor="middle" font-size="12.5" fill="#666">=條號第一個數字」</text>
+  <rect x="290" y="60" width="240" height="250" rx="12" fill="#fdf4f4" stroke="#b23b3b"/>
+  <text x="410" y="92" text-anchor="middle" font-size="15" font-weight="700" fill="#b23b3b">②查無代碼整欄消失</text>
+  <text x="410" y="124" text-anchor="middle" font-size="13">動傳條例不在代碼表</text>
+  <text x="410" y="148" text-anchor="middle" font-size="13">→❌C10 直接省略(null)</text>
+  <text x="410" y="186" text-anchor="middle" font-size="12.5" fill="#666">教法:「必填;查無代碼</text>
+  <text x="410" y="208" text-anchor="middle" font-size="12.5" fill="#666">直接以法規全名輸出」</text>
+  <text x="410" y="240" text-anchor="middle" font-size="12.5" fill="#888">同族:「125其他」被當偷懶預設</text>
+  <text x="410" y="262" text-anchor="middle" font-size="12.5" fill="#888">→明文限縮使用時機</text>
+  <rect x="550" y="60" width="240" height="250" rx="12" fill="#fdf4f4" stroke="#b23b3b"/>
+  <text x="670" y="92" text-anchor="middle" font-size="15" font-weight="700" fill="#b23b3b">③事實腦補分類</text>
+  <text x="670" y="124" text-anchor="middle" font-size="13">貨物在海關被查扣</text>
+  <text x="670" y="148" text-anchor="middle" font-size="13">→❌腦補成「未遂犯」</text>
+  <text x="670" y="172" text-anchor="middle" font-size="13">(全文根本沒有「未遂」)</text>
+  <text x="670" y="210" text-anchor="middle" font-size="12.5" fill="#666">教法:鐵律「全文無『未遂』</text>
+  <text x="670" y="232" text-anchor="middle" font-size="12.5" fill="#666">二字絕不可選未遂犯」</text>
+  <text x="670" y="262" text-anchor="middle" font-size="12.5" fill="#888">同族:事實關鍵詞不得勾碼,</text>
+  <text x="670" y="284" text-anchor="middle" font-size="12.5" fill="#888">只認論罪引用的法條</text>
+  <text x="30" y="342" font-size="14" fill="#666">一次歸因寫成「通則+反例」,整族錯誤一起消失(幫助犯類 86.46 → 100)。壞習慣清單要記入專案記憶,下輪直接引用。</text>
+</svg>
+<figcaption>卡C|失誤型態學。對付小模型不是罵它笨,是幫它建「防呆規格」——跟工廠治具同一個思路。</figcaption>
+</figure>
+
+<figure class="svgcard">
+<svg viewBox="0 0 800 300" role="img" aria-label="知識位階">
+  <text x="30" y="36" font-size="19" font-weight="700">📚 領域知識有位階:低位階讓路給高位階</text>
+  <rect x="60" y="70" width="680" height="56" rx="10" fill="#f2f7f3" stroke="#4a7c59" stroke-width="2"/>
+  <text x="80" y="96" font-size="15" font-weight="700" fill="#4a7c59">位階 1|官方正式需求文件(115年度統計需求 PDF,8 頁完整版)</text>
+  <text x="80" y="118" font-size="12.5" fill="#666">五欄位正式法條清單+執行案件規格——法條疑義以此為準</text>
+  <rect x="60" y="140" width="680" height="56" rx="10" fill="#fdf8ec" stroke="#a07d1c"/>
+  <text x="80" y="166" font-size="15" font-weight="700" fill="#a07d1c">位階 2|官方資料庫快照(全國法規資料庫 Open API,18 部法規 95 條文)</text>
+  <text x="80" y="188" font-size="12.5" fill="#666">條號精修的依據(森林法無§52 等);月度可重抓,附盤點表防漏</text>
+  <rect x="60" y="210" width="680" height="56" rx="10" fill="#fdf4f4" stroke="#b23b3b"/>
+  <text x="80" y="236" font-size="15" font-weight="700" fill="#b23b3b">位階 3|專家訪談節錄(二手轉述,9 款)</text>
+  <text x="80" y="258" font-size="12.5" fill="#666">起步夠用,但要標註「訪談節錄」caveat——本案正式文件到手後核出多處差異(刑231 前後段!)</text>
+  <text x="60" y="292" font-size="13.5" fill="#666">實例:gold 造冊有廢棄物清理法案,但官方 11 類清單沒有 → 不擅自刪,列「待與統計處確認」。衝突=去問人,不是自己選一邊。</text>
+</svg>
+<figcaption>卡D|知識位階。孵化過程知識來源會越來越好——每升一級就要回頭核對 prompt,並把 caveat 解除或升級。</figcaption>
+</figure>
+
+<figure class="svgcard">
+<svg viewBox="0 0 800 260" role="img" aria-label="誠實紅線">
+  <text x="30" y="36" font-size="19" font-weight="700">⚖️ 誠實紅線:分數是拿來做決策的,水分要標出來</text>
+  <rect x="40" y="60" width="720" height="80" rx="12" fill="#f2f7f3" stroke="#4a7c59"/>
+  <text x="60" y="90" font-size="15" font-weight="700" fill="#4a7c59">乾淨可歸因的改進</text>
+  <text x="60" y="118" font-size="14">機關查表腳本化・法規快照條號精修・category 必填——與保留集內容無關,可信</text>
+  <rect x="40" y="152" width="720" height="80" rx="12" fill="#fbf6ea" stroke="#a07d1c"/>
+  <text x="60" y="182" font-size="15" font-weight="700" fill="#a07d1c">帶回饋成分的改進(要向客戶與下一輪交代)</text>
+  <text x="60" y="210" font-size="14">代碼詞彙補齊源自保留集失敗分析——雖是官方固定詞彙、非個案知識,仍屬洩漏;96.44 非乾淨泛化估計</text>
+</svg>
+<figcaption>卡E|對策已寫進 <code>gepa/log.md</code>:下輪用全新書類另建第二保留集,重新拿乾淨數字。寧可標註水分,不可讓客戶把 96.44 當上線期望值。</figcaption>
+</figure>
+
+<!-- ================================================================ -->
+<h2>005|成果四件套(現行版 cand-009)</h2>
+
+<h3>① 最終 How-to</h3>
+<div class="note">
+<b>日常批次分類</b>(把一疊書類丟進資料夾,出來就是五份分類報表):<br>
+<code>bun dist/moj-doc-classifier/scripts/pipeline.ts --input data/input/批次 --out dist/output/批次-result</code><br>
+支援 PDF(含掃描)/DOCX/TXT;產出 5 CSV+判讀結果.xlsx+results.jsonl+metrics.json;中斷重跑不重工。<br><br>
+<b>GEPA 疊代驗證</b>(改 prompt 一定重測,像改食譜要試吃):<br>
+<code>bun tools/eval.ts --skill gepa/candidates/cand-XXX.md --split holdout --out gepa/runs/round-X</code><br>
+選手固定 <code>pi --provider gate --model tower/gemma-4-31b -p</code>——技能是給 31B 用的,不是給 Fable 自己用。<br><br>
+<b>回退歸因</b>:<code>--cases 案id1,案id2</code> 單點重測,2/2 重現才算系統性,才動 prompt。
+</div>
+
+<h3>② 最終程式碼(兩支關鍵腳本的心臟)</h3>
+<pre>// mask.ts — 姓名去識別化(20 行救回 37 個錯題)
+export function maskName(name: string): string {
+  const s = String(name ?? "").trim().replace(/\s+/g, " ");
+  if (s.includes("○")) return s.replace(/\s/g, "");      // 已匿名:照抄
+  if (/^[A-Za-zÀ-ÿ'. -]+$/.test(s)) return s.split(" ")[0] + "○○"; // 拉丁姓名
+  const chars = [...s.replace(/[\s·]/g, "")];
+  if (chars.length === 2) return chars[0] + "○";
+  if (chars.length === 3) return chars[0] + "○○";
+  return chars[0] + chars[1] + "○".repeat(chars.length - 2);  // 4 字雙姓
+}
+
+// orgn.ts — 22 家地檢對照表(12 家答案卷實證+10 家區域規律推導)
+export const ORGN_TABLE = { 臺北:{code:"2213",verified:true}, 桃園:{code:"2214",verified:true},
+  雲林:{code:"2223",verified:true}, /* …221x 北、222x 中、223x 南、224x 東離島… */ };
+export function resolveOrgn(docText: string) {
+  const head = docText.slice(0, 600).replace(/\s+/g, "").replace(/台/g, "臺");
+  const variants = [head, head.replace(/(.)\1+/g, "$1")];   // 折疊 OCR 疊字
+  // match /[臺福][灣建](○○)地方檢察署/ → 查表 → 覆寫;查不到 → 留空+警告,不整案失敗
+}</pre>
+
+<h3>③ 最終判讀 prompt(cand-009 六步驟骨架;完整檔:<code>dist/moj-doc-classifier/prompts/classify.md</code>)</h3>
+<div class="note" style="font-size:15.5px">
+<b>輸出格式</b>:單一 JSON,第一個鍵必須是 category(殘缺書類也必須推斷輸出五類之一)。<br>
+<b>步驟 1 選案號</b>:多案號 → 只留最新年度那組 → 組內取第一個;左補零到 6 碼(3849→003849)。<br>
+<b>步驟 2 基本欄位</b>:22 家地檢對照表(腳本會覆核);書類種類 → 處分代碼;iv_dtst_x 逐字照表。<br>
+<b>步驟 3 被告姓名</b>:照抄全名不加○(遮罩交給 mask.ts);跳過純代號被告;人口販運多被告取論罪含觸發法條那位。<br>
+<b>步驟 4 分類(依序檢查,命中即停)</b>:人口販運 → 國土保育 → 重大刑事 → 幫助犯 → 未遂犯。
+鐵律:①未遂/幫助不會讓案件掉出前面的類別;②兒少條例必查條號 ∈{32,33,34,37,42};③毒品必逐筆加總 ≥1000g;
+④刑231Ⅰ只有「後段詐術」算人口販運;⑤全文無「未遂」二字絕不可選未遂犯。<br>
+<b>步驟 5 人口販運五碼</b>:認條號不認敘述——事實裡的「招募、載送、使人出國」一律不得勾碼。<br>
+<b>步驟 6 案由/法條代碼</b>:C10 必填、查無代碼輸出法規全名;幫助犯跟著被幫助的本罪;補零口訣。
+</div>
+
+<h3>④ 最終資料樣態(去機敏示範)</h3>
+<pre>輸入(AI 友善純文字,自掃描 PDF 經本機 OCR):
+  臺灣臺北地方檢察署檢察官起訴書 114年度偵字第0000號
+  被告 王○○ …上列被告因違反毒品危害防制條例案件…當場逮捕而未遂…
+
+模型輸出(經腳本驗證+遮罩+機關覆寫後):
+  { "category":"未遂犯", "iv_orgn":"2213", "iv_orgn_x":"臺北地檢",
+    "iv_year":"114", "iv_iden":"0001", "iv_iden_x":"偵", "iv_srno":"000000",
+    "iv_name":"王○○", "iv_dtst":"10", "iv_dtst_x":"起訴",
+    "C10":"054毒品危害防制條例", "iv_lwno1":"0040x2x00" }
+
+最終產出:未遂犯.csv 一列(UTF-8 BOM,Excel 直開)+ 判讀結果.xlsx 對應頁簽</pre>
+
+<table>
+<tr><th>保留集 40 題</th><th>cand-005(首輪)</th><th>cand-009(現行)</th></tr>
+<tr><td><b>總分</b></td><td>91.13</td><td class="v">96.44</td></tr>
+<tr><td>幫助犯</td><td>86.46</td><td class="v">100.00</td></tr>
+<tr><td>未遂犯</td><td>85.42</td><td>96.87</td></tr>
+<tr><td>國土保育案件</td><td>95.45</td><td>96.59</td></tr>
+<tr><td>重大刑事案件</td><td>92.50</td><td>95.00</td></tr>
+<tr><td>人口販運案件</td><td>95.83</td><td>93.75</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2>006|為什麼能突破(三輪共同的答案)</h2>
+
+<p><b>突破一:把知識問題改成工程問題。</b>卡關時都在想「怎麼教會模型」;突破都發生在改問
+「這件事誰做最穩」——姓名遮罩(mask.ts)、機關代碼(orgn.ts)、流程編排(pipeline.ts),
+三次都是同一刀:封閉規則腳本化,模型只留語意判讀。</p>
+<p><b>突破二:失敗軌跡餵教練,不是總分。</b>「多案號取最新年度組第一個」「法規名稱含性剝削≠人口販運」
+這些規則,都是教練從逐案軌跡歸納的——只看總分永遠歸納不出來。</p>
+<p><b>突破三:回退紀律讓分數可信。</b>cand-006 升 3.94 卻藏 3 個系統性回退;單點重測 2/2 重現
+→ 歸因 → 手術式修——多花一輪,96.44 才值得簽名。反例也有:round-9 人販-04 一筆
+is_expn null,重測 2/2 全對 → 判定抽樣噪音,不動刀。<b>同一套流程,既抓真回退、也放過假警報。</b></p>
+
+<!-- ================================================================ -->
+<h2>007|給接手者的地雷總表(三輪血淚合訂)</h2>
+
+<div class="warn">
+<b>資料陷阱</b><br>
+① gold Excel 的 iv_idno 在書類文本中不存在(內部代號),不能計分。<br>
+② 3 件書類文本已匿名(甲○○)但 gold 留真實姓氏——模型不可能答對,建議修 gold。<br>
+③ 同年度多案號,gold 有 2 件取第二個(登錄噪音)——理論天花板約 98.5,不要追 100。<br>
+<b>工具陷阱</b><br>
+④ 雲端 OCR 閘道常 502;macOS Vision 離線 OCR 對繁中印刷書類又快又準,優先用。<br>
+⑤ 評測一定用 <code>pi -p</code> 跑 31B——用 Fable 自測分數虛高,量的不是上線行為。<br>
+⑥ evaluator 與 pipeline 的覆寫邏輯(mask/orgn)必須鏡射一致。<br>
+<b>模型陷阱(31B 壞習慣)</b><br>
+⑦ 補零方向錯(8→0008);⑧ 查無代碼整欄省略;⑨ 事實腦補分類(海關查扣→腦補未遂)。<br>
+<b>領域陷阱</b><br>
+⑩ 法規名稱≠分類(「性剝削」條例只有特定條號算人口販運);⑪ 刑231Ⅰ前段容留營利不算人口販運;<br>
+⑫ 幫助×未遂雙屬性:統計一案一類,優先序僅一件孤證(未遂優先)——待客戶確認;<br>
+⑬ 廢棄物清理法在 gold 有、官方清單沒有——待與統計處確認,不要擅自刪。<br>
+<b>流程陷阱</b><br>
+⑭ 保留集失敗分析回饋進 prompt=洩漏,分數要標水分;下輪建第二保留集。<br>
+⑮ 分數上升≠可收版,回退必歸因;分數下降≠壞改動,可能是噪音(單點重測 2/2 分辨)。
+</div>
+
+<!-- ================================================================ -->
+<h2>008|通用化拆解:哪些照抄、哪些置換 → <code>/技能孵化</code></h2>
+
+<figure class="svgcard">
+<svg viewBox="0 0 860 430" role="img" aria-label="固定骨架與領域槽位">
+  <text x="30" y="34" font-size="19" font-weight="700">🧬 拆解:綠色=通用骨架(照抄),琥珀=領域槽位(置換)</text>
+  <!-- fixed -->
+  <rect x="30" y="60" width="395" height="340" rx="14" fill="#f2f7f3" stroke="#4a7c59" stroke-width="2"/>
+  <text x="227" y="92" text-anchor="middle" font-size="16" font-weight="700" fill="#4a7c59">✅ 固定骨架(任何領域都一樣)</text>
+  <text x="50" y="126" font-size="13.5">・七階段流程:訪談→資料→架構→評測場→</text>
+  <text x="50" y="148" font-size="13.5">  GEPA 迴圈→誠實驗收→傳承</text>
+  <text x="50" y="176" font-size="13.5">・選手/裁判/教練三角(裁判給逐案軌跡)</text>
+  <text x="50" y="204" font-size="13.5">・訓練/保留集切割封存,>90 才停</text>
+  <text x="50" y="232" font-size="13.5">・Dynamic Workflow:封閉規則腳本化</text>
+  <text x="50" y="260" font-size="13.5">・回退紀律:逐案 diff→單點重測 2/2→歸因</text>
+  <text x="50" y="288" font-size="13.5">  →手術式修→Pareto 收斂</text>
+  <text x="50" y="316" font-size="13.5">・失誤型態學:通則+反例,一次滅一族錯</text>
+  <text x="50" y="344" font-size="13.5">・誠實紅線:洩漏標註、水分聲明</text>
+  <text x="50" y="372" font-size="13.5">・傳承三件套:log.md+prompt 彙整+HTML</text>
+  <!-- swap -->
+  <rect x="445" y="60" width="395" height="340" rx="14" fill="#fdf8ec" stroke="#a07d1c" stroke-width="2"/>
+  <text x="642" y="92" text-anchor="middle" font-size="16" font-weight="700" fill="#a07d1c">🔄 領域槽位(引導使用者置換)</text>
+  <text x="465" y="126" font-size="13.5">・輸入樣態:書類 PDF → 你的文件/影像/表單</text>
+  <text x="465" y="154" font-size="13.5">・輸出 schema:五類+統計欄位 → 你的標籤+欄位</text>
+  <text x="465" y="182" font-size="13.5">・gold 來源:客戶 Excel/黃金選手 → 你的標準答案</text>
+  <text x="465" y="210" font-size="13.5">・專家 know-how:法條清單 → 你的領域規則文件</text>
+  <text x="465" y="238" font-size="13.5">・知識資產:法規資料庫快照 → 你的權威資料源</text>
+  <text x="465" y="266" font-size="13.5">・腳本化清單:mask/orgn → 你的封閉規則</text>
+  <text x="465" y="294" font-size="13.5">・選手:pi -p 31B → 你的目標模型與跑法</text>
+  <text x="465" y="322" font-size="13.5">・計分:逐欄比對 → 你的欄位權重與豁免</text>
+  <text x="465" y="350" font-size="13.5">・領域陷阱:名稱陷阱/雙屬性 → 你的邊界案例</text>
+  <text x="465" y="378" font-size="13.5">・停止門檻:90 分 → 你的可用性門檻</text>
+</svg>
+<figcaption>這張表就是 <code>/技能孵化</code> 的設計圖:左欄寫死在技能流程裡,右欄做成「訪談問卷」,孵化開始時逐項問使用者、填進範本。</figcaption>
+</figure>
+
+<div class="note">
+<b>新技能已建好:<code>/技能孵化</code></b>(英文別名 skill-incubator)<br>
+位置:<code>~/.claude/skills/技能孵化/SKILL.md</code>(斜線可呼叫)+ repo <code>dist/技能孵化/</code>(傳承副本)。<br>
+它做的事:①先訪談(十個領域槽位問題)→ ②建資料工程與評測場 → ③帶著跑 GEPA 迴圈(選手/裁判/教練)
+→ ④回退紀律與誠實驗收 → ⑤自動產傳承三件套。夥伴換一個領域(環境、內政、醫療…),
+斜線一下,它會引導把右欄槽位換成新領域的知識,骨架與紀律原封不動。
+</div>
+
+<h2>Sources</h2>
+<ul style="font-size:15px">
+  <li><a href="https://github.com/gepa-ai/gepa">gepa-ai/gepa — GitHub</a>、<a href="https://arxiv.org/abs/2507.19457">GEPA 論文(arXiv:2507.19457,ICLR 2026)</a></li>
+  <li><a href="https://pi.dev/docs/latest/skills">pi.dev — Skills 官方文件</a>、<a href="https://code.claude.com/docs/en/workflows">Claude Code — Dynamic Workflows</a></li>
+  <li><a href="https://law.moj.gov.tw/">全國法規資料庫</a>(Open API 快照 2026-07-07;刑法§30 幫助犯與相關判例)</li>
+  <li>法務部 115 年度新世紀檢察 AI 智慧輔助系統(統計需求)PDF(客戶提供,8 頁完整版)</li>
+  <li>本專案內部:<code>gepa/log.md</code>(逐輪記錄)、<code>gepa/runs/*/results.json</code>(逐案分數)、<code>docs/傳承prompt/prompt-0~2.md</code>(prompt 原文彙整)、既有傳承 HTML 兩份(2026-07-07T122313/T153508)</li>
+</ul>
+
+<p style="font-size:13px;color:#999;margin-top:3rem">大整合傳承文件 · 2026-07-07T23:12+08:00 · 本頁所有範例均已去機敏;完整判讀 prompt 與真實資料存於專案 repo(機敏,勿外流)。</p>
+
+</body>
+</html>
